@@ -1,0 +1,24 @@
+<nav class="navbar">
+  <mat-toolbar class="nav-container">
+    @if (isAuthenticated) {
+      <span class="toolbar-spacer"></span>
+      <ul class="nav-list nav-right">
+        <li class="nav-item">
+          <button matIconButton>
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </li>
+      </ul>
+    } @else {
+      <span class="toolbar-spacer"></span>
+      <ul class="nav-list nav-right">
+        <li class="nav-item">
+          <a matButton routerLink="/register" routerLinkActive="active">Регистрация</a>
+        </li>
+        <li class="nav-item">
+          <a matButton routerLink="/login" routerLinkActive="active">Войти</a>
+        </li>
+      </ul>
+    }
+  </mat-toolbar>
+</nav>

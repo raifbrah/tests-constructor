@@ -1,0 +1,14 @@
+.navbar {
+  display: flex;
+  box-shadow: 2px 2px 9px #0003;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
