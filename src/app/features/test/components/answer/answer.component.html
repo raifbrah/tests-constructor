@@ -1,0 +1,25 @@
+<div class="answer">
+  @if (testType === 'passing') {
+    <input
+      [(ngModel)]="answer.checked"
+      class="answer__checkbox"
+      [type]="questionType === 'multiple' ? 'checkbox' : 'radio'"
+      [attr.name]="questionType === 'multiple' ? null : questionId"
+    />
+  }
+
+  <input
+    [(ngModel)]="answer.value"
+    class="answer__input"
+    type="text"
+    placeholder="Вариант ответа"
+  />
+
+  @if (testType !== 'passing') {
+    <button matButton="outlined" (click)="answer.correct = !answer.correct">
+      Правильный: {{ answer.correct }}
+    </button>
+
+    <button matButton="outlined" (click)="onRemoveAnswer()">Удалить</button>
+  }
+</div>

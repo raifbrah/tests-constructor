@@ -1,18 +1,31 @@
-<div class="auth-wrapper">
-  <mat-card class="auth-container" appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>{{ title }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from
-        Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
-        originally bred for hunting.
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button matButton>Забыли пароль?</button>
-      <button matButton>Войти</button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+<mat-card class="auth-container" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title class="auth__title">{{ title }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="auth__form" [formGroup]="authForm">
+      @if (authService.isError()) {
+        <p class="auth__error-text">Неверные данные пользователя!</p>
+      }
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput type="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input formControlName="password" matInput type="password" />
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions class="auth__actions">
+    <button matButton>Забыли пароль?</button>
+    @if (authType === 'login') {
+      <button matButton="filled" (click)="login()" [disabled]="!authForm.valid">Войти</button>
+    } @else {
+      <button matButton="filled" (click)="register()" [disabled]="!authForm.valid">
+        Зарегистрироваться
+      </button>
+    }
+  </mat-card-actions>
+</mat-card>

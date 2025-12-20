@@ -1,17 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './core/layout/navbar/navbar.component';
+import { HeaderComponent } from './core/layout/header/header.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, HeaderComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
-  protected readonly title = signal('test-constructor');
-
-  constructor() {
-    console.log('Hello, world!');
-  }
-}
+export class App {}

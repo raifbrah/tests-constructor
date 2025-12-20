@@ -1,0 +1,22 @@
+@if (testType === 'passing') {
+  <h1 class="test-title">{{ test.title }}</h1>
+} @else {
+  <input class="test-title" type="text" [(ngModel)]="test.title" />
+}
+
+<div class="test__container">
+  @for (question of test.questions; track question.id; let questionIndex = $index) {
+    <app-question
+      [question]="question"
+      [questionIndex]="questionIndex"
+      [testType]="testType"
+      (removeQuestion)="removeQuestion(question.id)"
+    />
+  }
+
+  @if (testType !== 'passing') {
+    <button mat-icon-button class="add-card-btn" (click)="addNewQuestion()">
+      <mat-icon>add_circle</mat-icon>
+    </button>
+  }
+</div>

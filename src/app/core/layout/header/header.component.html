@@ -1,12 +1,18 @@
 <nav class="navbar">
   <mat-toolbar class="nav-container">
-    @if (isAuthenticated) {
+    @if (authService.isLoggedIn()) {
       <span class="toolbar-spacer"></span>
       <ul class="nav-list nav-right">
         <li class="nav-item">
-          <button matIconButton>
-            <mat-icon>favorite</mat-icon>
+          <button matIconButton [matMenuTriggerFor]="menu">
+            <mat-icon>account_circle</mat-icon>
           </button>
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item routerLink="">Мои тесты</a>
+            <button mat-menu-item routerLink="/passed-tests">Завершенные</button>
+            <button mat-menu-item>Профиль</button>
+            <button mat-menu-item (click)="logout()">Выйти</button>
+          </mat-menu>
         </li>
       </ul>
     } @else {
