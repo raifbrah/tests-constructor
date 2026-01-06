@@ -6,17 +6,13 @@
 @use '@angular/material' as mat;
 
 html {
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$azure-palette,
+  @include mat.theme((color: (primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
         error: mat.$red-palette,
       ),
       typography: Roboto,
       density: 0,
-    )
-  );
+    ));
   @include mat.system-classes();
 }
 
@@ -36,12 +32,14 @@ body {
   // Reset the user agent margin.
   margin: 0;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
@@ -54,8 +52,12 @@ body {
 }
 
 .error-button {
-  @include mat.button-overrides((
-    filled-container-color: var(--mat-sys-error),
-    filled-label-text-color: var(--mat-sys-on-error)
-  ));
+  @include mat.button-overrides((filled-container-color: var(--mat-sys-error),
+      filled-label-text-color: var(--mat-sys-on-error)));
+}
+
+.disabled-input-text {
+  background: none;
+  border: none;
+  color: #000;
 }

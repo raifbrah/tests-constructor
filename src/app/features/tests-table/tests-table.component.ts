@@ -3,47 +3,49 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { TestItem, TestsService } from '../../services/tests.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TestsService } from '../../services/tests.service';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Test } from '../test/interfaces/test.interface';
 
 @Component({
   selector: 'tests-table',
   templateUrl: './tests-table.component.html',
   styleUrl: './tests-table.component.scss',
   standalone: true,
-  imports: [MatButtonModule, MatTableModule, DatePipe, MatIconModule, RouterLink],
+  imports: [MatButtonModule, MatTableModule, DatePipe, MatIconModule, RouterModule],
 })
 export class TestsTableComponent {
-  protected testsType: string = '';
+  public testsType: string = '';
 
-  protected readonly testsService = inject(TestsService);
+  public readonly testsService = inject(TestsService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   displayedColumns: string[] = [];
 
-  private updateDisplayedColumns() {
+  private updateDisplayedColumns(): void {
     this.displayedColumns = [
       'name',
       ...(this.testsType === 'passed-tests'
-        ? ['passedAt', 'result']
-        : ['createdAt', 'participantsCount']),
+        ? ['passed_at', 'result']
+        : ['created_at', 'participants_count']),
       'actions',
     ];
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.testsType = this.route.snapshot.url.at(-1)?.path ?? '';
     this.updateDisplayedColumns();
   }
 
-  editTest(test: TestItem) {
-    console.log('Edit:', test);
+  editTest(test: Test): void {
+    this.router.navigate(['/test'], { queryParams: { id: test.id, type: 'edit' } });
   }
 
-  deleteTest(test: TestItem) {
-    console.log('Delete:', test);
+  deleteTest(test: Test): void {
+    this.testsService.deleteTest(test.id);
   }
 
-  openTest(test: TestItem) {
-    console.log('Open test', test);
+  openTest(test: Test): void {
+    this.router.navigate(['/test'], { queryParams: { id: test.id, type: 'passing' } });
   }
 }

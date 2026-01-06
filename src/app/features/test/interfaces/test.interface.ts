@@ -1,16 +1,22 @@
 export interface Test {
   id: number;
-  title: string;
-  author_id: number;
+  name: string;
+  author_id?: number;
+  complete_user_id?: number;
   created_at: number;
   questions: Question[];
+  participants_count?: number;
+  passed_at?: number;
+  result?: string;
 }
 
 export interface Question {
   id: number;
   description: string;
   type: 'multiple' | 'single';
+  group_answer: string | null;
   order: number;
+  theUserAnsweredCorrectly: boolean;
   answers: Answer[];
 }
 

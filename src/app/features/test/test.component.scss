@@ -4,20 +4,31 @@
   width: 100%;
   font-size: 2rem;
   font-weight: bold;
-  border: none;
-  background: none;
 }
 
-.test__container {
+.test-container {
+  gap: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin: 0 auto;
-  max-width: min(800px, 100%);
   border: 1px solid #000;
+  max-width: min(800px, 100%);
+  margin: 0 auto;
 
   padding: 2rem min(4rem, 5%);
   border-radius: 1rem;
+}
+
+.test-container__questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.test-container__actions {
+  gap: 0.5rem;
+  display: flex;
+  margin: 0 auto;
+  width: min-content;
 }
 
 .add-card-btn {

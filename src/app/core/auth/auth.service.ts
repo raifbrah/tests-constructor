@@ -11,7 +11,7 @@ interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  protected currentUser = signal<User | null>(
+  public currentUser = signal<User | null>(
     JSON.parse(localStorage.getItem('currentUser') || 'null'),
   );
   public isLoggedIn = computed(() => !!this.currentUser());
@@ -23,12 +23,16 @@ export class AuthService {
   login(credentials: User) {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
 
-    const isUserLogged = users.some(
-      (user: User) => user.email === credentials.email && user.password === credentials.password,
-    );
+    const isUserLogged = users.some((user: User) => {
+      if (user.email === credentials.email && user.password === credentials.password) {
+        this.currentUser.set(user);
+        return true;
+      }
+      return false;
+    });
 
     if (isUserLogged) {
-      this.setAuth({ ...credentials });
+      this.setAuth(this.currentUser()!);
       this.router.navigateByUrl(this.activatedRoute.snapshot.queryParamMap.get('returnUrl') || '/');
       this.isError.set(false);
     } else {

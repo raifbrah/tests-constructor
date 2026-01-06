@@ -24,7 +24,7 @@ export class AuthComponent {
   authType = '';
   title = '';
 
-  protected readonly authService = inject(AuthService);
+  public readonly authService = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
 
   authForm = new FormGroup({

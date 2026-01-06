@@ -1,22 +1,38 @@
-@if (testType === 'passing') {
-  <h1 class="test-title">{{ test.title }}</h1>
-} @else {
-  <input class="test-title" type="text" [(ngModel)]="test.title" />
-}
+<input
+  class="test-title"
+  type="text"
+  [(ngModel)]="test.name"
+  [disabled]="testType === 'passing'"
+  [ngClass]="{
+    'disabled-input-text': testType === 'passing',
+  }"
+/>
 
-<div class="test__container">
-  @for (question of test.questions; track question.id; let questionIndex = $index) {
-    <app-question
-      [question]="question"
-      [questionIndex]="questionIndex"
-      [testType]="testType"
-      (removeQuestion)="removeQuestion(question.id)"
-    />
-  }
+<div class="test-container">
+  <div class="test-container__questions-list">
+    @for (question of test.questions; track question.id; let questionIndex = $index) {
+      <app-question
+        [question]="question"
+        [questionIndex]="questionIndex"
+        [testType]="testType"
+        (removeQuestion)="removeQuestion(question.id)"
+      />
+    }
 
-  @if (testType !== 'passing') {
-    <button mat-icon-button class="add-card-btn" (click)="addNewQuestion()">
-      <mat-icon>add_circle</mat-icon>
-    </button>
-  }
+    @if (testType !== 'passing') {
+      <button mat-icon-button class="add-card-btn" (click)="addNewQuestion()">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    }
+  </div>
+
+  <div class="test-container__actions">
+    @if (testType === 'passing') {
+      <a matButton="outlined" routerLink="">Выйти</a>
+      <button matButton="filled" (click)="completeTest()">Завершить</button>
+    } @else {
+      <a matButton="outlined" routerLink="">Отменить</a>
+      <button matButton="filled" (click)="saveTest()">Сохранить</button>
+    }
+  </div>
 </div>

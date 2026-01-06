@@ -21,7 +21,7 @@ import { AuthService } from '../../auth/auth.service';
   ],
 })
 export class HeaderComponent {
-  protected readonly authService = inject(AuthService);
+  public readonly authService = inject(AuthService);
 
   logout(): void {
     this.authService.logout();

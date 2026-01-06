@@ -1,11 +1,22 @@
 <div class="answer">
   @if (testType === 'passing') {
-    <input
-      [(ngModel)]="answer.checked"
-      class="answer__checkbox"
-      [type]="questionType === 'multiple' ? 'checkbox' : 'radio'"
-      [attr.name]="questionType === 'multiple' ? null : questionId"
-    />
+    @if (question.type === 'multiple') {
+      <input
+        [(ngModel)]="answer.checked"
+        (change)="saveAnswer()"
+        class="answer__checkbox"
+        type="checkbox"
+      />
+    } @else {
+      <input
+        [(ngModel)]="question.group_answer"
+        [value]="answer.id"
+        (change)="saveAnswer()"
+        class="answer__checkbox"
+        type="radio"
+        [attr.name]="question.id"
+      />
+    }
   }
 
   <input
@@ -13,6 +24,10 @@
     class="answer__input"
     type="text"
     placeholder="Вариант ответа"
+    [disabled]="testType === 'passing'"
+    [ngClass]="{
+      'disabled-input-text': testType === 'passing',
+    }"
   />
 
   @if (testType !== 'passing') {

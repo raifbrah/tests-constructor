@@ -1,45 +1,97 @@
-import { Injectable } from '@angular/core';
-
-export interface TestItem {
-  name: string;
-  createdAt?: Date;
-  participantsCount?: number;
-  passedAt?: Date;
-  result?: string;
-}
+import { inject, Injectable } from '@angular/core';
+import { Test } from '../features/test/interfaces/test.interface';
+import { LocalStorageService } from './localstorage.service';
+import { AuthService } from '../core/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TestsService {
-  testsList: TestItem[] = [
+  private readonly localStorageService = inject(LocalStorageService);
+  private readonly authService = inject(AuthService);
+
+  constructor() {
+    this.loadAllTests();
+  }
+
+  public createNewTest(newTest: Test): void {
+    const isTest = this.testsList.some((test) => test.id === newTest.id);
+
+    if (isTest) {
+      this.updateTest(newTest);
+    } else {
+      this.testsList = [...this.testsList, { ...newTest }];
+    }
+
+    this.save();
+  }
+
+  public updateTest(updateTest: Test): void {
+    const updateTestIndex = this.testsList.findIndex((test) => test.id === updateTest.id);
+    this.testsList[updateTestIndex] = { ...updateTest };
+
+    this.save();
+  }
+
+  public loadAllTests(): void {
+    const tests: Test[] | null = this.localStorageService.load('tests');
+    const completedTests: Test[] | null = this.localStorageService.load('completed-tests');
+    if (tests) this.testsList = [...tests];
+    if (completedTests) this.completedTestsList = [...completedTests];
+  }
+
+  public deleteTest(testId: number): void {
+    this.testsList = this.testsList.filter((test) => test.id !== testId);
+    this.save();
+  }
+
+  public completeTest(test: Test) {
+    let completionTest = { ...test };
+    let numberOfCorrectAnswers = 0;
+    const numberOfQuestions = completionTest.questions.length;
+
+    completionTest.questions.map((question) => {
+      if (question.type === 'single') {
+        question.answers.map((answer) => {
+          if (Number(question.group_answer) === answer.id && answer.correct) {
+            numberOfCorrectAnswers++;
+            question.theUserAnsweredCorrectly = true;
+          }
+        });
+      } else {
+        const incrorrectAnswers = question.answers.some(
+          (answer) => answer.correct === false && answer.checked,
+        );
+        const correctAnswers = question.answers.some((answer) => answer.correct && answer.checked);
+
+        if (!incrorrectAnswers && correctAnswers) {
+          numberOfCorrectAnswers++;
+          question.theUserAnsweredCorrectly = true;
+        }
+      }
+    });
+
+    test.result = `${numberOfCorrectAnswers}/${numberOfQuestions}`;
+    test.complete_user_id = this.authService.currentUser()!.id;
+    this.completedTestsList.push(test);
+    this.save();
+  }
+
+  public save(): void {
+    this.localStorageService.save('tests', this.testsList);
+    this.localStorageService.save('completed-tests', this.completedTestsList);
+  }
+
+  public testsList: Test[] = [
     {
+      id: 1,
       name: 'Тест 1',
-      createdAt: new Date(2021, 5, 3), // 03.06.2021
-      participantsCount: 5,
-      passedAt: new Date(2021, 5, 3), // 03.06.2021
-      result: '35/40',
-    },
-    {
-      name: 'Тест 2',
-      createdAt: new Date(2021, 5, 3),
-      participantsCount: 5,
-      passedAt: new Date(2021, 5, 3), // 03.06.2021
-      result: '35/40',
-    },
-    {
-      name: 'Тест 3',
-      createdAt: new Date(2021, 5, 3),
-      participantsCount: 5,
-      passedAt: new Date(2021, 5, 3), // 03.06.2021
-      result: '35/40',
-    },
-    {
-      name: 'Тест 4',
-      createdAt: new Date(2021, 5, 3),
-      participantsCount: 5,
-      passedAt: new Date(2021, 5, 3), // 03.06.2021
-      result: '35/40',
+      created_at: Date.now(),
+      participants_count: 5,
+      passed_at: Date.now(),
+      questions: [],
     },
   ];
+
+  public completedTestsList: Test[] = [];
 }

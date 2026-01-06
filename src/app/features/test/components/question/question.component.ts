@@ -4,13 +4,14 @@ import { AnswerComponent } from '../answer/answer.component';
 import { Question } from '../../interfaces/test.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
   styleUrl: './question.component.scss',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, AnswerComponent, FormsModule],
+  imports: [MatCardModule, MatButtonModule, AnswerComponent, FormsModule, NgClass],
 })
 export class QuestionComponent {
   @Input() question!: Question;
@@ -19,15 +20,15 @@ export class QuestionComponent {
 
   @Output() removeQuestion = new EventEmitter();
 
-  protected onRemoveQuestion(): void {
+  public onRemoveQuestion(): void {
     this.removeQuestion.emit();
   }
 
-  protected removeAnswer(answerId: number): void {
+  public removeAnswer(answerId: number): void {
     this.question.answers = this.question.answers.filter((answer) => answer.id !== answerId);
   }
 
-  protected addNewAnswer(): void {
+  public addNewAnswer(): void {
     this.question.answers = [
       ...this.question.answers,
       {
@@ -37,5 +38,10 @@ export class QuestionComponent {
         checked: false,
       },
     ];
+  }
+
+  public changeQuestionType() {
+    this.question.type = this.question.type === 'multiple' ? 'single' : 'multiple';
+    this.question.answers.map((answer) => (answer.checked = false));
   }
 }

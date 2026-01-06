@@ -28,4 +28,9 @@ export const routes: Routes = [
     loadComponent: () => import('./features/test/test.component').then((c) => c.TestComponent),
     canActivate: [authGuard],
   },
+  {
+    path: 'test/:id/:type',
+    loadComponent: () => import('./features/test/test.component').then((c) => c.TestComponent),
+    canActivate: [authGuard],
+  },
 ];
