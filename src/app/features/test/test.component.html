@@ -2,15 +2,19 @@
   class="test-title"
   type="text"
   [(ngModel)]="test.name"
-  [disabled]="testType === 'passing'"
+  [disabled]="testType === 'passing' || testType === 'watch'"
   [ngClass]="{
-    'disabled-input-text': testType === 'passing',
+    'disabled-input-text': testType === 'passing' || testType === 'watch',
   }"
 />
 
 <div class="test-container">
   <div class="test-container__questions-list">
-    @for (question of test.questions; track question.id; let questionIndex = $index) {
+    @for (
+      question of test.questions;
+      track question.id;
+      let questionIndex = $index
+    ) {
       <app-question
         [question]="question"
         [questionIndex]="questionIndex"
@@ -19,7 +23,7 @@
       />
     }
 
-    @if (testType !== 'passing') {
+    @if (testType !== 'passing' && testType !== 'watch') {
       <button mat-icon-button class="add-card-btn" (click)="addNewQuestion()">
         <mat-icon>add_circle</mat-icon>
       </button>
@@ -30,6 +34,8 @@
     @if (testType === 'passing') {
       <a matButton="outlined" routerLink="">Выйти</a>
       <button matButton="filled" (click)="completeTest()">Завершить</button>
+    } @else if (testType === 'watch') {
+      <a matButton="outlined" routerLink="/passed-tests">Выйти</a>
     } @else {
       <a matButton="outlined" routerLink="">Отменить</a>
       <button matButton="filled" (click)="saveTest()">Сохранить</button>

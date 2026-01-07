@@ -1,11 +1,12 @@
 <div class="answer">
-  @if (testType === 'passing') {
+  @if (testType === 'passing' || testType === 'watch') {
     @if (question.type === 'multiple') {
       <input
         [(ngModel)]="answer.checked"
         (change)="saveAnswer()"
         class="answer__checkbox"
         type="checkbox"
+        [disabled]="testType === 'watch'"
       />
     } @else {
       <input
@@ -15,6 +16,7 @@
         class="answer__checkbox"
         type="radio"
         [attr.name]="question.id"
+        [disabled]="testType === 'watch'"
       />
     }
   }
@@ -24,13 +26,15 @@
     class="answer__input"
     type="text"
     placeholder="Вариант ответа"
-    [disabled]="testType === 'passing'"
+    [disabled]="testType === 'passing' || testType === 'watch'"
     [ngClass]="{
-      'disabled-input-text': testType === 'passing',
+      'disabled-input-text': testType === 'passing' || testType === 'watch',
+      'right-answer': testType === 'watch' && answer.correct,
+      'wrong-answer': testType === 'watch' && !answer.correct,
     }"
   />
 
-  @if (testType !== 'passing') {
+  @if (testType !== 'passing' && testType !== 'watch') {
     <button matButton="outlined" (click)="answer.correct = !answer.correct">
       Правильный: {{ answer.correct }}
     </button>

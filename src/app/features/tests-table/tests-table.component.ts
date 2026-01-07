@@ -13,7 +13,13 @@ import { AuthService } from '../../core/auth/auth.service';
   templateUrl: './tests-table.component.html',
   styleUrl: './tests-table.component.scss',
   standalone: true,
-  imports: [MatButtonModule, MatTableModule, DatePipe, MatIconModule, RouterModule],
+  imports: [
+    MatButtonModule,
+    MatTableModule,
+    DatePipe,
+    MatIconModule,
+    RouterModule,
+  ],
 })
 export class TestsTableComponent {
   public testsType: string = '';
@@ -52,7 +58,9 @@ export class TestsTableComponent {
   }
 
   editTest(test: Test): void {
-    this.router.navigate(['/test'], { queryParams: { id: test.id, type: 'edit' } });
+    this.router.navigate(['/test'], {
+      queryParams: { id: test.id, type: 'edit' },
+    });
   }
 
   deleteTest(test: Test): void {
@@ -60,6 +68,13 @@ export class TestsTableComponent {
   }
 
   openTest(test: Test): void {
-    this.router.navigate(['/test'], { queryParams: { id: test.id, type: 'passing' } });
+    this.router.navigate(['/test'], {
+      queryParams: { id: test.id, type: 'passing' },
+    });
+  }
+  watchTest(test: Test): void {
+    this.router.navigate(['/test'], {
+      queryParams: { id: test.id, type: 'watch' },
+    });
   }
 }

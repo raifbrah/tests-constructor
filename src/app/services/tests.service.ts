@@ -27,7 +27,9 @@ export class TestsService {
   }
 
   public updateTest(updateTest: Test): void {
-    const updateTestIndex = this.testsList.findIndex((test) => test.id === updateTest.id);
+    const updateTestIndex = this.testsList.findIndex(
+      (test) => test.id === updateTest.id,
+    );
     this.testsList[updateTestIndex] = { ...updateTest };
 
     this.save();
@@ -35,7 +37,8 @@ export class TestsService {
 
   public loadAllTests(): void {
     const tests: Test[] | null = this.localStorageService.load('tests');
-    const completedTests: Test[] | null = this.localStorageService.load('completed-tests');
+    const completedTests: Test[] | null =
+      this.localStorageService.load('completed-tests');
     if (tests) this.testsList = [...tests];
     if (completedTests) this.completedTestsList = [...completedTests];
   }
@@ -62,7 +65,9 @@ export class TestsService {
         const incrorrectAnswers = question.answers.some(
           (answer) => answer.correct === false && answer.checked,
         );
-        const correctAnswers = question.answers.some((answer) => answer.correct && answer.checked);
+        const correctAnswers = question.answers.some(
+          (answer) => answer.correct && answer.checked,
+        );
 
         if (!incrorrectAnswers && correctAnswers) {
           numberOfCorrectAnswers++;
@@ -73,6 +78,9 @@ export class TestsService {
 
     test.result = `${numberOfCorrectAnswers}/${numberOfQuestions}`;
     test.complete_user_id = this.authService.currentUser()!.id;
+    this.completedTestsList = this.completedTestsList.filter(
+      (oldTest) => oldTest.id !== test.id,
+    );
     this.completedTestsList.push(test);
     this.save();
   }

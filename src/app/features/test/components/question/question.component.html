@@ -7,14 +7,14 @@
         type="text"
         [(ngModel)]="question.description"
         placeholder="Описание вопроса"
-        [disabled]="testType === 'passing'"
+        [disabled]="testType === 'passing' || testType === 'watch'"
         [ngClass]="{
-          'disabled-input-text': testType === 'passing',
+          'disabled-input-text': testType === 'passing' || testType === 'watch',
         }"
       />
     </mat-card-title>
 
-    @if (testType !== 'passing') {
+    @if (testType !== 'passing' && testType !== 'watch') {
       <button (click)="changeQuestionType()" mat-stroked-button>
         @if (question.type === 'single') {
           Один вариант ответа
@@ -37,12 +37,20 @@
       }
     </div>
 
-    @if (testType !== 'passing') {
+    @if (testType !== 'passing' && testType !== 'watch') {
       <div class="card-actions">
-        <button mat-stroked-button class="task__add-option-btn" (click)="addNewAnswer()">
+        <button
+          mat-stroked-button
+          class="task__add-option-btn"
+          (click)="addNewAnswer()"
+        >
           + добавить
         </button>
-        <button matButton="filled" class="error-button" (click)="onRemoveQuestion()">
+        <button
+          matButton="filled"
+          class="error-button"
+          (click)="onRemoveQuestion()"
+        >
           Удалить карточку
         </button>
       </div>

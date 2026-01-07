@@ -1,1 +1,1 @@
-export type TestType = 'create' | 'edit' | 'passing';
+export type TestType = 'create' | 'edit' | 'passing' | 'watch';
