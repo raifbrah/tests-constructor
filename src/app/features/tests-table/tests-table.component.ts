@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TestsService } from '../../services/tests.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Test } from '../test/interfaces/test.interface';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'tests-table',
@@ -17,6 +18,7 @@ import { Test } from '../test/interfaces/test.interface';
 export class TestsTableComponent {
   public testsType: string = '';
 
+  public readonly authService = inject(AuthService);
   public readonly testsService = inject(TestsService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -30,6 +32,18 @@ export class TestsTableComponent {
         : ['created_at', 'participants_count']),
       'actions',
     ];
+  }
+
+  getTests(testType?: 'completed') {
+    if (testType !== 'completed') {
+      return this.testsService.testsList.filter(
+        (test) => test.author_id === this.authService.currentUser()!.id,
+      );
+    }
+
+    return this.testsService.completedTestsList.filter(
+      (test) => test.author_id === this.authService.currentUser()!.id,
+    );
   }
 
   ngOnInit(): void {

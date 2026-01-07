@@ -3,14 +3,19 @@
     <h2>Пройденные тесты</h2>
   } @else {
     <h2>Мои тесты</h2>
-    <a matButton="filled" [routerLink]="['test']" [queryParams]="{ type: 'create' }">Создать</a>
+    <a
+      matButton="filled"
+      [routerLink]="['test']"
+      [queryParams]="{ type: 'create' }"
+      >Создать</a
+    >
   }
 </div>
 
 <table
   mat-table
   [dataSource]="
-    testsType === 'passed-tests' ? testsService.completedTestsList : testsService.testsList
+    testsType === 'passed-tests' ? getTests('completed') : getTests()
   "
   class="mat-elevation-z8"
 >
@@ -22,7 +27,9 @@
   @if (testsType !== 'passed-tests') {
     <ng-container matColumnDef="created_at">
       <th mat-header-cell *matHeaderCellDef>Дата создания</th>
-      <td mat-cell *matCellDef="let test">{{ test.created_at | date: 'dd.MM.yyyy' }}</td>
+      <td mat-cell *matCellDef="let test">
+        {{ test.created_at | date: 'dd.MM.yyyy' }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="participants_count">
@@ -32,7 +39,9 @@
   } @else {
     <ng-container matColumnDef="passed_at">
       <th mat-header-cell *matHeaderCellDef>Дата прохождения</th>
-      <td mat-cell *matCellDef="let test">{{ test.passed_at | date: 'dd.MM.yyyy' }}</td>
+      <td mat-cell *matCellDef="let test">
+        {{ test.passed_at | date: 'dd.MM.yyyy' }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="result">

@@ -20,17 +20,29 @@ export const routes: Routes = [
   {
     path: 'passed-tests',
     loadComponent: () =>
-      import('./features/tests-table/tests-table.component').then((c) => c.TestsTableComponent),
+      import('./features/tests-table/tests-table.component').then(
+        (c) => c.TestsTableComponent,
+      ),
     canActivate: [authGuard],
   },
   {
     path: 'test',
-    loadComponent: () => import('./features/test/test.component').then((c) => c.TestComponent),
+    loadComponent: () =>
+      import('./features/test/test.component').then((c) => c.TestComponent),
     canActivate: [authGuard],
   },
   {
     path: 'test/:id/:type',
-    loadComponent: () => import('./features/test/test.component').then((c) => c.TestComponent),
+    loadComponent: () =>
+      import('./features/test/test.component').then((c) => c.TestComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./features/profile/profile.component').then(
+        (c) => c.ProfileComponent,
+      ),
     canActivate: [authGuard],
   },
 ];
