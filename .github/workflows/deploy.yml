@@ -1,0 +1,24 @@
+name: Deploy to Gihub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@4
+      with:
+        node-version: 20
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build -- --base-href '/tests-constructor/'
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@v2.1.2
+      with:
+        folder: dist/tests-constructor
