@@ -32,12 +32,12 @@ jobs:
 
       - name: Build Angular
         run: |
-          npm run build -- --configuration production --base-href /tests-constructor/
+          npm run build -- --configuration production --base-href=/tests-constructor/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/tests-constructor
+          path: dist/tests-constructor/browser
 
   deploy:
     needs: build
