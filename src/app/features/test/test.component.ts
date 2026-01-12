@@ -1,10 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Test } from './interfaces/test.interface';
 import { QuestionComponent } from './components/question/question.component';
@@ -13,6 +7,7 @@ import { TestsService } from '../../services/tests.service';
 import { TestType } from './interfaces/test-type.interface';
 import { NgClass } from '@angular/common';
 import { AuthService } from '../../core/auth/auth.service';
+import { TuiButton } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-test',
@@ -20,12 +15,7 @@ import { AuthService } from '../../core/auth/auth.service';
   styleUrl: './test.component.scss',
   standalone: true,
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    MatCardModule,
+    TuiButton,
     FormsModule,
     QuestionComponent,
     RouterLink,

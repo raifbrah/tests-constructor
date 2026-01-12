@@ -1,12 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
-import { DatePipe } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
+import { DatePipe, NgIf, NgForOf } from '@angular/common';
 import { TestsService } from '../../services/tests.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Test } from '../test/interfaces/test.interface';
 import { AuthService } from '../../core/auth/auth.service';
+import { TuiButton } from '@taiga-ui/core';
 
 @Component({
   selector: 'tests-table',
@@ -14,11 +12,11 @@ import { AuthService } from '../../core/auth/auth.service';
   styleUrl: './tests-table.component.scss',
   standalone: true,
   imports: [
-    MatButtonModule,
-    MatTableModule,
+    TuiButton,
     DatePipe,
-    MatIconModule,
     RouterModule,
+    NgIf,
+    NgForOf,
   ],
 })
 export class TestsTableComponent {
@@ -28,17 +26,6 @@ export class TestsTableComponent {
   public readonly testsService = inject(TestsService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  displayedColumns: string[] = [];
-
-  private updateDisplayedColumns(): void {
-    this.displayedColumns = [
-      'name',
-      ...(this.testsType === 'passed-tests'
-        ? ['passed_at', 'result']
-        : ['created_at', 'participants_count']),
-      'actions',
-    ];
-  }
 
   getTests(testType?: 'completed') {
     if (testType !== 'completed') {
@@ -54,7 +41,6 @@ export class TestsTableComponent {
 
   ngOnInit(): void {
     this.testsType = this.route.snapshot.url.at(-1)?.path ?? '';
-    this.updateDisplayedColumns();
   }
 
   editTest(test: Test): void {
